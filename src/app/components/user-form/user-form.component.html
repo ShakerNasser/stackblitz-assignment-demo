@@ -1,7 +1,7 @@
 <!-- src/app/components/user-form/user-form.component.html -->
 
 <div class="user-form">
-    <form [formGroup]="userForm" (ngSubmit)="onSave()">
+    <form [formGroup]="userForm">
       <div class="form-field">
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" formControlName="first_name">
@@ -28,15 +28,7 @@
       </div>
       <input type="hidden" id="time" formControlName="time">
       <div class="form-buttons">
-        <button type="submit" [disabled]="!userForm.valid">Save</button>
+        <button type="submit" (onClick)="onSave()" [disabled]="!userForm.valid">Save</button>
       </div>
     </form>
 </div>
-
-<pre>
-    Requirements:
-        - Find at least 3 issues in this implementation.
-        - The 'full_name' field should automatically update to reflect a combination of 'first_name' and 'last_name'.
-        - Extend the functionality by adding a 'skills' property to the user. Examples include "UX/UI Design" or "PHP Development".
-        - Ensure that the form submits correctly with all validated fields.
-</pre>
