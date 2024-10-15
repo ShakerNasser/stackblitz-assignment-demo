@@ -52,13 +52,16 @@
         <label for="skills">Skills</label>
         <div formArrayName="skills">
           @for (item of skills.controls; let i = $index; track item;) {
-          <div class="form-field">
-            <label for="skill">Skill {{i+1}}:</label>
-            <div class="skill-input">
-              <input id="skill" [formControlName]="$index" type="text" placeholder="Enter a skill" />
-              <button type="button" class="remove_btn" (click)="removeSkill(i)">Remove</button>
+            <div class="form-field">
+              <label for="skill">Skill {{i + 1}}:</label>
+              <div class="skill-input">
+                <input id="skill" [formControlName]="i" type="text" placeholder="Enter a skill" />
+                <button type="button" class="remove_btn" (click)="removeSkill(i)">Remove</button>
+              </div>
+              @if(skills.at(i)?.errors) {
+                <span class="error">{{ getErrorMessage('skills', i) }}</span>
+              }
             </div>
-          </div>
           }
         </div>
         <button type="button" class="add_btn" (click)="addSkill()">Add Skill</button>

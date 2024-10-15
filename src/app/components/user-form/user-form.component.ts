@@ -28,7 +28,7 @@ export class UserFormComponent implements OnInit {
       last_name: ['', Validators.required],
       full_name: [{ value: '', disabled: true }],
       age: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.pattern(/^[0-9]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/)]],
+      email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
       skills: this.fb.array([])
     })
   }
@@ -95,15 +95,20 @@ export class UserFormComponent implements OnInit {
   }
 
   // Error handling methods for the form fields
-  getErrorMessage(controlName: string): string | null {
-    const control = this.userForm.get(controlName)
-    if (control && control.errors) {
-      if (control.errors['required']) {
-        return 'This field is required'
-      } else if (control.errors['email']) {
-        return 'Enter a valid email'
+  getErrorMessage(controlName: string, index?: number): string | null {
+    if (index !== undefined) {
+      const skillControl = this.skills.at(index);
+      if (skillControl && skillControl.errors && skillControl.errors['required']) {
+        return 'This field is required'; 
+      }
+    } else {
+      const control = this.userForm.get(controlName);
+      if (control && control.errors && control.errors['required']) {
+        return 'This field is required'; 
+      } else if (control && control.errors && control.errors['email']) {
+        return 'Enter a valid email';
       }
     }
-    return null
+    return null; 
   }
 }
