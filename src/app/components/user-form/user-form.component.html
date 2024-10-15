@@ -1,34 +1,74 @@
 <!-- src/app/components/user-form/user-form.component.html -->
-
-<div class="user-form">
+@if (loading) {
+  <div class="loader">
+    <span>Loading data....</span>
+  </div>
+  } @else {
+  <div class="user-form">
     <form [formGroup]="userForm">
       <div class="form-field">
         <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" formControlName="first_name">
-        <span class="error" *ngIf="userForm.get('first_name')?.errors">{{ getErrorMessage('first_name') }}</span>
+        <input
+          (input)="handleFullname()"
+          type="text"
+          id="first_name"
+          formControlName="first_name"
+        />
+        @if(userForm.get('first_name')?.errors){
+        <span class="error">{{ getErrorMessage("first_name") }}</span>
+        }
       </div>
       <div class="form-field">
         <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" formControlName="last_name">
-        <span class="error" *ngIf="userForm.get('last_name')?.errors">{{ getErrorMessage('last_name') }}</span>
+        <input
+          (input)="handleFullname()"
+          type="text"
+          id="last_name"
+          formControlName="last_name"
+        />
+        @if (userForm.get('last_name')?.errors) {
+        <span class="error">{{ getErrorMessage("last_name") }}</span>
+        }
       </div>
       <div class="form-field">
         <label for="full_name">Full Name:</label>
-        <input type="text" id="full_name" formControlName="full_name" [disabled]="true">
+        <input type="text" id="full_name" formControlName="full_name" />
       </div>
       <div class="form-field">
         <label for="age">Age:</label>
-        <input type="number" id="age" formControlName="age">
-        <span class="error" *ngIf="userForm.get('age')?.errors">{{ getErrorMessage('age') }}</span>
+        <input type="number" id="age" formControlName="age" />
+        @if(userForm.get('age')?.errors){
+        <span class="error">{{ getErrorMessage("age") }}</span>
+        }
       </div>
       <div class="form-field">
         <label for="email">Email:</label>
-        <input type="email" id="email" formControlName="email">
-        <span class="error" *ngIf="userForm.get('email')?.errors">{{ getErrorMessage('email') }}</span>
+        <input type="email" id="email" formControlName="email" />
+        @if(userForm.get('email')?.errors){
+        <span class="error">{{ getErrorMessage("email") }}</span>
+        }
       </div>
-      <input type="hidden" id="time" formControlName="time">
+      <div>
+        <label for="skills">Skills</label>
+        <div formArrayName="skills">
+          @for (item of skills.controls; let i = $index; track item;) {
+          <div class="form-field">
+            <label for="skill">Skill {{i+1}}:</label>
+            <div class="skill-input">
+              <input id="skill" [formControlName]="$index" type="text" placeholder="Enter a skill" />
+              <button type="button" class="remove_btn" (click)="removeSkill(i)">Remove</button>
+            </div>
+          </div>
+          }
+        </div>
+        <button type="button" class="add_btn" (click)="addSkill()">Add Skill</button>
+      </div>
       <div class="form-buttons">
-        <button type="submit" (onClick)="onSave()" [disabled]="!userForm.valid">Save</button>
+        <button type="submit" (Click)="onSave()" [disabled]="!userForm.valid">
+          Save
+        </button>
       </div>
     </form>
-</div>
+  </div>
+  }
+  
